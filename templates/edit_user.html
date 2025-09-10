@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Edit Profile</title>
+</head>
+
+<body>
+    <h2>Edit Profile</h2>
+    <form method="POST">
+        <label for="username">Username:</label>
+        <input type="text" name="username" value="{{ user.username }}" required><br>
+        <button type="submit">Update</button>
+    </form>
+    <a href="{{ url_for('auth.usershow') }}">Back to Profile</a>
+</body>
+
+</html>
