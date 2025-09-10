@@ -1,8 +1,12 @@
+import os
+
 from flask import Flask, request, render_template, session, jsonify
 import bcrypt
-import psycopg2
+from dotenv import load_dotenv
 
+load_dotenv()
 app = Flask(__name__)
+app.secret_key = os.environ.get("SECRET_KEY")
 
 @app.route("/")
 def landing_page():
