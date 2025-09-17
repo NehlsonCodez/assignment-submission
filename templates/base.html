@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en" class="{{ 'dark' if theme == 'dark' else '' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SUBMIT{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: 'hsl(214, 65%, 95%)',
+                            100: 'hsl(214, 65%, 85%)',
+                            200: 'hsl(214, 65%, 75%)',
+                            300: 'hsl(214, 65%, 65%)',
+                            400: 'hsl(214, 65%, 55%)',
+                            500: 'hsl(214, 88%, 35%)',
+                            600: 'hsl(214, 88%, 30%)',
+                            700: 'hsl(214, 88%, 25%)',
+                            800: 'hsl(214, 88%, 20%)',
+                            900: 'hsl(214, 88%, 15%)',
+                        },
+                        success: 'hsl(142, 76%, 36%)',
+                        warning: 'hsl(25, 95%, 53%)',
+                        error: 'hsl(0, 84%, 60%)',
+                        muted: 'hsl(220, 9%, 46%)',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            },
+            darkMode: 'class'
+        }
+    </script>
+    <style>
+        .hover-elevate {
+            @apply transition-all duration-200 hover:shadow-md hover:-translate-y-0.5;
+        }
+        .active-elevate {
+            @apply active:translate-y-0 active:shadow-sm;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans">
+    {% if current_user.is_authenticated %}
+    <!-- Header -->
+    <header class="bg-white/95 dark:bg-gray-800/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-gray-800/60 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
+        <div class="px-4 py-3">
+            <div class="flex items-center justify-between">
+                <!-- Logo and Title -->
+                <div class="flex items-center gap-3">
+                    <div class="bg-primary-100 dark:bg-primary-900 p-2 rounded-lg ring-1 ring-primary-200 dark:ring-primary-800">
+                        <svg class="h-6 w-6 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-semibold text-gray-900 dark:text-gray-100">SUBMIT</h1>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Assignment Management Platform</p>
+                    </div>
+                </div>
+
+                <!-- Search -->
+                <div class="flex-1 max-w-sm mx-8">
+                    <div class="relative">
+                        <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        <input type="text" placeholder="Search assignments, users..." 
+                               class="w-full pl-10 pr-4 py-2 bg-gray-100/50 dark:bg-gray-700/50 border border-gray-300/20 dark:border-gray-600/20 rounded-lg focus:bg-white dark:focus:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                    </div>
+                </div>
+
+                <!-- User Actions -->
+                <div class="flex items-center gap-3">
+                    <!-- Notifications -->
+                    <div class="relative">
+                        <button class="p-2 text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors" id="notificationBtn">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5-5-5h5zm0 0V7a5 5 0 00-10 0v10"></path>
+                            </svg>
+                            <span class="absolute -top-1 -right-1 h-4 w-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center" id="notificationBadge">3</span>
+                        </button>
+                        
+                        <!-- Notifications Dropdown -->
+                        <div id="notificationDropdown" class="hidden absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50">
+                            <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                                <h3 class="font-semibold">Notifications</h3>
+                            </div>
+                            <div class="max-h-80 overflow-y-auto" id="notificationList">
+                                <!-- Notifications will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Theme Toggle -->
+                    <button class="p-2 text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors" id="themeToggle">
+                        <svg class="h-5 w-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                        <svg class="h-5 w-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                    </button>
+
+                    <!-- User Menu -->
+                    <div class="flex items-center gap-3 pl-2 border-l border-gray-300 dark:border-gray-600">
+                        <div class="text-right">
+                            <p class="text-sm font-medium">{{ current_user.name }}</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400 capitalize">{{ current_user.role }}</p>
+                        </div>
+                        <div class="relative">
+                            <button class="w-8 h-8 bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 rounded-full font-semibold text-sm hover:bg-primary-200 dark:hover:bg-primary-800 transition-colors" id="userMenuBtn">
+                                {{ current_user.name[:1] }}{{ current_user.name.split(' ')[-1][:1] if ' ' in current_user.name else current_user.name[1:2] }}
+                            </button>
+                            
+                            <!-- User Dropdown -->
+                            <div id="userDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50">
+                                <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                                    <p class="font-medium">{{ current_user.name }}</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ current_user.email }}</p>
+                                </div>
+                                <div class="p-2">
+                                    <a href="{{ url_for('logout') }}" class="block w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+                                        Sign out
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+        <div class="px-4">
+            <div class="flex space-x-8">
+                <a href="{{ url_for('dashboard') }}" 
+                   class="inline-flex items-center px-1 pt-1 pb-4 border-b-2 {{ 'border-primary-500 text-primary-600 dark:text-primary-400' if request.endpoint == 'dashboard' else 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300' }} text-sm font-medium">
+                    <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="{{ url_for('assignments') }}" 
+                   class="inline-flex items-center px-1 pt-1 pb-4 border-b-2 {{ 'border-primary-500 text-primary-600 dark:text-primary-400' if request.endpoint in ['assignments', 'create_assignment'] else 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300' }} text-sm font-medium">
+                    <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    {% if current_user.role == 'student' %}Assignments{% else %}My Assignments{% endif %}
+                </a>
+                {% if current_user.role in ['lecturer', 'faculty'] %}
+                <a href="{{ url_for('create_assignment') }}" 
+                   class="inline-flex items-center px-1 pt-1 pb-4 border-b-2 {{ 'border-primary-500 text-primary-600 dark:text-primary-400' if request.endpoint == 'create_assignment' else 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300' }} text-sm font-medium">
+                    <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Create Assignment
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    {% endif %}
+
+    <!-- Flash Messages -->
+    <div id="flashMessages" class="fixed top-20 right-4 z-50 space-y-2">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="flash-message bg-white dark:bg-gray-800 border rounded-lg shadow-lg p-4 min-w-80 max-w-md
+                    {% if category == 'error' %}border-red-500 text-red-800 dark:text-red-200{% endif %}
+                    {% if category == 'success' %}border-green-500 text-green-800 dark:text-green-200{% endif %}
+                    {% if category == 'info' %}border-blue-500 text-blue-800 dark:text-blue-200{% endif %}">
+                    <div class="flex justify-between items-start">
+                        <p class="flex-1">{{ message }}</p>
+                        <button class="ml-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300" onclick="this.parentElement.parentElement.remove()">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Main Content -->
+    <main class="{% if current_user.is_authenticated %}p-6 bg-gradient-to-br from-gray-50/50 to-gray-100/50 dark:from-gray-900/50 dark:to-gray-800/50 min-h-screen{% else %}{% endif %}">
+        <div class="{% if current_user.is_authenticated %}max-w-7xl mx-auto{% endif %}">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script>
+        // Theme toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        
+        // Check for saved theme or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        html.classList.toggle('dark', currentTheme === 'dark');
+        
+        themeToggle?.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            const newTheme = html.classList.contains('dark') ? 'dark' : 'light';
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // User dropdown
+        const userMenuBtn = document.getElementById('userMenuBtn');
+        const userDropdown = document.getElementById('userDropdown');
+        
+        userMenuBtn?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            userDropdown?.classList.toggle('hidden');
+            document.getElementById('notificationDropdown')?.classList.add('hidden');
+        });
+
+        // Notification dropdown
+        const notificationBtn = document.getElementById('notificationBtn');
+        const notificationDropdown = document.getElementById('notificationDropdown');
+        
+        notificationBtn?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            notificationDropdown?.classList.toggle('hidden');
+            userDropdown?.classList.add('hidden');
+            
+            // Load notifications
+            if (!notificationDropdown?.classList.contains('hidden')) {
+                loadNotifications();
+            }
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', () => {
+            userDropdown?.classList.add('hidden');
+            notificationDropdown?.classList.add('hidden');
+        });
+
+        // Auto-dismiss success messages
+        document.addEventListener('DOMContentLoaded', () => {
+            const flashMessages = document.querySelectorAll('.flash-message');
+            flashMessages.forEach(message => {
+                if (message.textContent.includes('success') || message.classList.contains('border-green-500')) {
+                    setTimeout(() => {
+                        message.remove();
+                    }, 5000);
+                }
+            });
+        });
+
+        // Load notifications
+        async function loadNotifications() {
+            try {
+                const response = await fetch('/notifications');
+                const notifications = await response.json();
+                
+                const notificationList = document.getElementById('notificationList');
+                if (!notificationList) return;
+                
+                if (notifications.length === 0) {
+                    notificationList.innerHTML = '<div class="p-4 text-center text-gray-500 dark:text-gray-400">No notifications yet</div>';
+                    return;
+                }
+                
+                notificationList.innerHTML = notifications.map(notif => `
+                    <div class="p-3 hover:bg-gray-50 dark:hover:bg-gray-700 ${!notif.read ? 'bg-primary-50/50 dark:bg-primary-900/20' : ''}">
+                        <div class="flex items-start gap-3">
+                            <div class="mt-1">
+                                ${getNotificationIcon(notif.type)}
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <p class="text-sm font-medium line-clamp-1">${notif.title}</p>
+                                    ${!notif.read ? '<div class="w-2 h-2 bg-primary-500 rounded-full"></div>' : ''}
+                                </div>
+                                <p class="text-xs text-gray-600 dark:text-gray-400 line-clamp-2 mb-1">${notif.message}</p>
+                                <p class="text-xs text-gray-500">${notif.timestamp}</p>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Update badge
+                const unreadCount = notifications.filter(n => !n.read).length;
+                const badge = document.getElementById('notificationBadge');
+                if (badge) {
+                    badge.textContent = unreadCount.toString();
+                    badge.style.display = unreadCount > 0 ? 'flex' : 'none';
+                }
+                
+            } catch (error) {
+                console.error('Failed to load notifications:', error);
+            }
+        }
+
+        function getNotificationIcon(type) {
+            const iconClass = "h-4 w-4";
+            switch(type) {
+                case 'assignment':
+                    return `<svg class="${iconClass} text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>`;
+                case 'grade':
+                    return `<svg class="${iconClass} text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>`;
+                case 'approval':
+                    return `<svg class="${iconClass} text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>`;
+                case 'system':
+                    return `<svg class="${iconClass} text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
+                default:
+                    return `<svg class="${iconClass} text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5-5-5h5zm0 0V7a5 5 0 00-10 0v10"></path></svg>`;
+            }
+        }
+
+        // Keyboard navigation for notifications
+        notificationBtn?.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                notificationBtn.click();
+            }
+        });
+
+        userMenuBtn?.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                userMenuBtn.click();
+            }
+        });
+    </script>
+</body>
+</html>

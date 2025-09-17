@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block title %}Assignments - SUBMIT{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                {% if current_user.role == 'student' %}
+                    Available Assignments
+                {% else %}
+                    My Assignments
+                {% endif %}
+            </h1>
+            <p class="text-gray-600 dark:text-gray-400">
+                {% if current_user.role == 'student' %}
+                    View and submit your course assignments
+                {% elif current_user.role == 'lecturer' %}
+                    Manage your created assignments
+                {% else %}
+                    Overview of all platform assignments
+                {% endif %}
+            </p>
+        </div>
+        {% if current_user.role in ['lecturer', 'faculty'] %}
+        <a href="{{ url_for('create_assignment') }}" 
+           class="inline-flex items-center px-4 py-2 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition-colors hover-elevate active-elevate">
+            <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            Create New Assignment
+        </a>
+        {% endif %}
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 p-4">
+        <div class="flex flex-wrap items-center gap-4">
+            <div class="flex items-center gap-2">
+                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Status:</label>
+                <select class="px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                    <option>All</option>
+                    <option>Open</option>
+                    <option>Closed</option>
+                    <option>Submitted</option>
+                    <option>Graded</option>
+                </select>
+            </div>
+            <div class="flex items-center gap-2">
+                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Department:</label>
+                <select class="px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                    <option>All Departments</option>
+                    <option>Computer Science</option>
+                    <option>Mathematics</option>
+                    <option>Physics</option>
+                    <option>Chemistry</option>
+                </select>
+            </div>
+            <div class="flex items-center gap-2">
+                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Sort by:</label>
+                <select class="px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                    <option>Deadline (Earliest)</option>
+                    <option>Deadline (Latest)</option>
+                    <option>Title (A-Z)</option>
+                    <option>Created Date</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assignments Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% if assignments %}
+            {% for assignment in assignments %}
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 hover-elevate">
+                <div class="p-6">
+                    <div class="flex items-start justify-between mb-3">
+                        <h3 class="font-medium text-gray-900 dark:text-gray-100 line-clamp-2">{{ assignment.title }}</h3>
+                        <span class="px-2 py-1 text-xs rounded-full flex-shrink-0 ml-2
+                            {% if assignment.status == 'open' %}
+                                bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200
+                            {% elif assignment.status == 'closed' %}
+                                bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200
+                            {% elif assignment.status == 'submitted' %}
+                                bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200
+                            {% else %}
+                                bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200
+                            {% endif %}">
+                            {{ assignment.status.title() }}
+                        </span>
+                    </div>
+                    
+                    <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mb-4">
+                        {{ assignment.description }}
+                    </p>
+                    
+                    <div class="space-y-3 mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded">
+                                {{ assignment.department }}
+                            </span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between text-sm">
+                            <div class="flex items-center gap-2">
+                                <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                <span class="text-gray-600 dark:text-gray-400">
+                                    Due: {{ assignment.deadline[:10] if assignment.deadline else 'No deadline' }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 pt-2 border-t border-gray-200 dark:border-gray-600">
+                        <button class="flex-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                            View Details
+                        </button>
+                        {% if current_user.role == 'student' and assignment.status == 'open' %}
+                        <button class="flex-1 px-3 py-2 text-sm bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+                            Submit Work
+                        </button>
+                        {% elif current_user.role == 'lecturer' %}
+                        <button class="flex-1 px-3 py-2 text-sm bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+                            Manage
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-span-full text-center py-12">
+                <svg class="h-12 w-12 mx-auto text-gray-400 dark:text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">No assignments found</h3>
+                <p class="text-gray-600 dark:text-gray-400">
+                    {% if current_user.role == 'student' %}
+                        No assignments have been posted for your department yet.
+                    {% elif current_user.role == 'lecturer' %}
+                        You haven't created any assignments yet.
+                        <a href="{{ url_for('create_assignment') }}" class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">
+                            Create your first assignment
+                        </a>
+                    {% else %}
+                        No assignments have been created on the platform yet.
+                    {% endif %}
+                </p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

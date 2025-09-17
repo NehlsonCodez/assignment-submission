@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% block title %}Faculty Dashboard - SUBMIT{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div>
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">Faculty Dashboard</h1>
+        <p class="text-gray-600 dark:text-gray-400">Manage your institution's assignment platform</p>
+    </div>
+
+    <!-- Stats Overview -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Users</p>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-gray-100">1,247</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-500">Active platform users</p>
+                </div>
+                <svg class="h-8 w-8 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                </svg>
+            </div>
+            <div class="mt-2">
+                <span class="text-green-600 dark:text-green-400 text-xs">+12% from last month</span>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Active Assignments</p>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-gray-100">89</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-500">Currently open</p>
+                </div>
+                <svg class="h-8 w-8 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+            </div>
+            <div class="mt-2">
+                <span class="text-green-600 dark:text-green-400 text-xs">+8% from last month</span>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Pending Approvals</p>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-gray-100">3</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-500">Lecturer requests</p>
+                </div>
+                <svg class="h-8 w-8 text-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                </svg>
+            </div>
+            <div class="mt-2">
+                <span class="text-red-600 dark:text-red-400 text-xs">-15% from last month</span>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Submission Rate</p>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-gray-100">94%</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-500">This semester</p>
+                </div>
+                <svg class="h-8 w-8 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                </svg>
+            </div>
+            <div class="mt-2">
+                <span class="text-green-600 dark:text-green-400 text-xs">+2% from last month</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pending Lecturer Approvals -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700">
+        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                </svg>
+                Pending Lecturer Approvals
+            </h2>
+        </div>
+        <div class="p-6">
+            <div class="space-y-4">
+                <!-- Sample pending lecturer -->
+                <div class="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-lg hover-elevate">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center font-semibold text-primary-600 dark:text-primary-400">
+                            SJ
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <h4 class="font-medium text-gray-900 dark:text-gray-100">Dr. Sarah Johnson</h4>
+                                <span class="px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full">Computer Science</span>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">sarah.johnson@university.edu</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-500">Applied: January 15, 2024</p>
+                            <div class="mt-2 p-2 bg-gray-50 dark:bg-gray-700 rounded text-xs">
+                                <strong>Credentials:</strong> PhD in Computer Science, 5 years teaching experience
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="px-3 py-2 text-sm bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-lg hover:bg-red-200 dark:hover:bg-red-800 transition-colors">
+                            <svg class="h-4 w-4 mr-1 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            Reject
+                        </button>
+                        <button class="px-3 py-2 text-sm bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-lg hover:bg-green-200 dark:hover:bg-green-800 transition-colors">
+                            <svg class="h-4 w-4 mr-1 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Approve
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-lg hover-elevate">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center font-semibold text-primary-600 dark:text-primary-400">
+                            MC
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <h4 class="font-medium text-gray-900 dark:text-gray-100">Prof. Michael Chen</h4>
+                                <span class="px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full">Mathematics</span>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">m.chen@university.edu</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-500">Applied: January 14, 2024</p>
+                            <div class="mt-2 p-2 bg-gray-50 dark:bg-gray-700 rounded text-xs">
+                                <strong>Credentials:</strong> PhD in Mathematics, Former industry researcher
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="px-3 py-2 text-sm bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-lg hover:bg-red-200 dark:hover:bg-red-800 transition-colors">
+                            <svg class="h-4 w-4 mr-1 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            Reject
+                        </button>
+                        <button class="px-3 py-2 text-sm bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-lg hover:bg-green-200 dark:hover:bg-green-800 transition-colors">
+                            <svg class="h-4 w-4 mr-1 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Approve
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity and Department Overview -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700">
+            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Recent Submissions</h3>
+            </div>
+            <div class="p-6">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-900 dark:text-gray-100">Data Structures Project</span>
+                        <div class="text-right">
+                            <span class="text-sm font-medium">23/28</span>
+                            <p class="text-xs text-gray-500">submitted</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-900 dark:text-gray-100">Calculus Homework 5</span>
+                        <div class="text-right">
+                            <span class="text-sm font-medium">31/33</span>
+                            <p class="text-xs text-gray-500">submitted</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-900 dark:text-gray-100">Physics Lab Report</span>
+                        <div class="text-right">
+                            <span class="text-sm font-medium">18/25</span>
+                            <p class="text-xs text-gray-500">submitted</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-900 dark:text-gray-100">Essay: Modern Literature</span>
+                        <div class="text-right">
+                            <span class="text-sm font-medium">27/30</span>
+                            <p class="text-xs text-gray-500">submitted</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700">
+            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Department Overview</h3>
+            </div>
+            <div class="p-6">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-medium text-gray-900 dark:text-gray-100">Computer Science</span>
+                        <div class="text-right">
+                            <p class="text-xs text-gray-500">12 lecturers, 245 students</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-medium text-gray-900 dark:text-gray-100">Mathematics</span>
+                        <div class="text-right">
+                            <p class="text-xs text-gray-500">8 lecturers, 189 students</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-medium text-gray-900 dark:text-gray-100">Physics</span>
+                        <div class="text-right">
+                            <p class="text-xs text-gray-500">6 lecturers, 156 students</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-medium text-gray-900 dark:text-gray-100">Chemistry</span>
+                        <div class="text-right">
+                            <p class="text-xs text-gray-500">7 lecturers, 134 students</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

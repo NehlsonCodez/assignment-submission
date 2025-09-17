@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}Create Assignment - EduSubmit Pro{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">Create Assignment</h1>
+            <p class="text-gray-600 dark:text-gray-400">Set up a new assignment for your students</p>
+        </div>
+        <a href="{{ url_for('assignments') }}" 
+           class="inline-flex items-center px-4 py-2 bg-gray-600 text-white font-medium rounded-lg hover:bg-gray-700 transition-colors">
+            <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+            Back to Assignments
+        </a>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700">
+        <div class="p-6">
+            <form method="POST" enctype="multipart/form-data" class="space-y-6">
+                {{ form.hidden_tag() }}
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Assignment Title</label>
+                            {{ form.title(class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100", placeholder="Enter assignment title") }}
+                            {% if form.title.errors %}
+                                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.title.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Description</label>
+                            {{ form.description(class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 resize-none", rows="4", placeholder="Describe the assignment requirements") }}
+                            {% if form.description.errors %}
+                                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.description.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label for="deadline" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Deadline</label>
+                            <div class="relative">
+                                <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                {{ form.deadline(class="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100", type="datetime-local") }}
+                            </div>
+                            {% if form.deadline.errors %}
+                                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.deadline.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label for="department" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Target Department</label>
+                            {{ form.department(class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100") }}
+                            {% if form.department.errors %}
+                                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.department.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">File Upload Settings</label>
+                            <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg space-y-3">
+                                <div>
+                                    <label class="block text-sm text-gray-600 dark:text-gray-400 mb-2">Allowed File Types</label>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <label class="flex items-center">
+                                            <input type="checkbox" class="mr-2" checked>
+                                            <span class="text-sm">.pdf</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" class="mr-2" checked>
+                                            <span class="text-sm">.docx</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" class="mr-2">
+                                            <span class="text-sm">.jpg</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" class="mr-2">
+                                            <span class="text-sm">.png</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="maxFileSize" class="block text-sm text-gray-600 dark:text-gray-400 mb-2">Maximum File Size</label>
+                                    <select class="px-3 py-2 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+                                        <option value="25">25 MB</option>
+                                        <option value="50" selected>50 MB</option>
+                                        <option value="100">100 MB</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="attachments" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Assignment Materials (Optional)</label>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Upload reference materials, guidelines, or rubrics for students</p>
+                            {{ form.attachments(class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100", multiple=true) }}
+                            {% if form.attachments.errors %}
+                                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.attachments.errors[0] }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <a href="{{ url_for('assignments') }}" 
+                       class="flex-1 px-4 py-2 text-center border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                        Cancel
+                    </a>
+                    <button type="submit" 
+                            class="flex-1 bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 hover-elevate active-elevate">
+                        Create Assignment
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
